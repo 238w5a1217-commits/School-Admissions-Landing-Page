@@ -35,10 +35,10 @@ export default function FinalCtaSection({ onOpenModal }) {
               </p>
 
               {/* Three Primary CTAs - Stacks nicely on mobile, row on desktop */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-8 sm:mb-10">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3 mb-8 sm:mb-10">
                 <button
                   onClick={() => onOpenModal("enquiry")}
-                  className="px-6 py-3.5 text-sm sm:text-base font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 rounded-xl transition-all shadow-lg shadow-black/20 inline-flex items-center justify-center gap-2 cursor-pointer"
+                  className="btn-outline btn-amber w-full sm:w-auto shadow-md"
                 >
                   <span>Apply Now for 2027–28</span>
                   <ArrowRight className="w-4 h-4 text-slate-950" />
@@ -46,7 +46,7 @@ export default function FinalCtaSection({ onOpenModal }) {
 
                 <button
                   onClick={() => onOpenModal("tour")}
-                  className="btn-outline btn-white px-5 py-3.5 text-sm sm:text-base font-bold text-slate-900 bg-white hover:bg-slate-100 justify-center cursor-pointer"
+                  className="btn-outline btn-white w-full sm:w-auto"
                 >
                   <Calendar className="w-4 h-4 text-slate-700" />
                   <span>Book a Campus Visit</span>
@@ -54,7 +54,7 @@ export default function FinalCtaSection({ onOpenModal }) {
 
                 <button
                   onClick={() => onOpenModal("callback")}
-                  className="btn-outline btn-white px-5 py-3.5 text-sm sm:text-base font-bold text-slate-900 bg-white hover:bg-slate-100 justify-center cursor-pointer"
+                  className="btn-outline btn-white w-full sm:w-auto"
                 >
                   <Phone className="w-4 h-4 text-slate-700" />
                   <span>Talk to Admissions Team</span>
