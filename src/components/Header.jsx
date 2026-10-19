@@ -20,29 +20,39 @@ export default function Header({ onOpenModal }) {
   return (
     <div className="sticky top-0 z-50 w-full shadow-sm">
       {/* Top Announcement Bar with Scrolling Marquee */}
-      <div className="bg-[#0f172a] text-white py-2 px-4 border-b border-slate-800 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 text-xs">
+      <div className="bg-[#0f172a] text-white py-2 px-3 sm:px-4 border-b border-slate-800 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2.5 sm:gap-4 text-xs">
           {/* Badge & Marquee Scrolling Text */}
-          <div className="flex items-center gap-3 flex-1 overflow-hidden">
-            <span className="bg-amber-400 text-slate-950 font-mono font-bold text-[10px] py-0.5 px-2.5 rounded-full shrink-0 tracking-wider">
-              SESSION 2027–28
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 overflow-hidden">
+            <span className="bg-amber-400 text-slate-950 font-mono font-bold text-[9.5px] sm:text-[10px] py-0.5 px-2 sm:px-2.5 rounded-full shrink-0 tracking-wider flex items-center gap-1.5 shadow-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span>
+              <span className="hidden xs:inline">SESSION </span>2027–28
             </span>
-            <div className="flex-1 overflow-hidden">
+            <div
+              className="flex-1 min-w-0 overflow-hidden relative"
+              style={{
+                maskImage: "linear-gradient(to right, transparent 0%, black 12px, black calc(100% - 12px), transparent 100%)",
+                WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 12px, black calc(100% - 12px), transparent 100%)",
+              }}
+            >
               <marquee
                 behavior="scroll"
                 direction="left"
-                scrollamount="6"
-                className="font-mono text-xs text-slate-200 py-0.5 block cursor-pointer"
+                scrollamount="5"
+                className="font-mono text-[11.5px] sm:text-xs text-slate-100 py-0.5 block cursor-pointer w-full leading-normal"
                 onMouseEnter={(e) => e.target.stop && e.target.stop()}
                 onMouseLeave={(e) => e.target.start && e.target.start()}
+                onTouchStart={(e) => e.target.stop && e.target.stop()}
+                onTouchEnd={(e) => e.target.start && e.target.start()}
+                onClick={() => onOpenModal("enquiry")}
               >
                 🎓 Admissions Open for Academic Session 2027–28 &bull; Applications Open for Grades 1 to 12 &bull; Early Bird Interaction Slots Open &bull; CBSE &amp; Cambridge Curriculum &bull; 1:12 Student-Teacher Mentorship Ratio &bull; Merit Scholarships Available up to 40% &bull; Limited Intake Per Grade
               </marquee>
             </div>
           </div>
 
-          {/* Quick Action Links */}
-          <div className="flex items-center gap-4 shrink-0 font-mono text-xs pl-3 border-l border-slate-700">
+          {/* Quick Action Links - hidden on small mobile screens to give marquee maximum display width */}
+          <div className="hidden sm:flex items-center gap-3 sm:gap-4 shrink-0 font-mono text-xs pl-3 border-l border-slate-700">
             <button
               onClick={() => onOpenModal("enquiry")}
               className="inline-flex items-center gap-1 text-amber-400 hover:text-white transition-colors underline-offset-4 hover:underline font-bold"
