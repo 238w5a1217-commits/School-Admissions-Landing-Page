@@ -42,23 +42,32 @@ export function EnquiryModal({ isOpen, onClose }) {
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-enquiry-title">
       <div className="modal-box modal-large">
-        <button
-          onClick={handleReset}
-          className="modal-close-x"
-          aria-label="Close modal"
-        >
-          <X className="w-5 h-5" />
-        </button>
+        {/* Top Header Row with Session Badge & Close Button */}
+        <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+          <div className="flex items-center gap-2">
+            <span className="project-tag-pill tag-blue text-[10.5px] sm:text-xs py-1 px-2.5">
+              🎓 SESSION 2027–28
+            </span>
+            <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-mono font-medium text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              Admissions Open
+            </span>
+          </div>
+          <button
+            onClick={handleReset}
+            className="modal-close-x"
+            aria-label="Close modal"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
 
         {!submitted ? (
           <div>
-            <div className="mb-6">
-              <span className="project-tag-pill tag-blue text-xs mb-2">
-                ACADEMIC SESSION 2027–28
-              </span>
+            <div className="mb-4 sm:mb-5">
               <h3
                 id="modal-enquiry-title"
-                className="font-heading font-black text-2xl sm:text-3xl text-slate-900"
+                className="font-heading font-black text-xl sm:text-2xl lg:text-3xl text-slate-900 tracking-tight"
               >
                 Admission Enquiry &amp; Application
               </h3>
@@ -67,10 +76,10 @@ export function EnquiryModal({ isOpen, onClose }) {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="type-label form-label">Child's Full Name *</label>
+                  <label className="form-label">Child's Full Name *</label>
                   <input
                     type="text"
                     required
@@ -81,7 +90,7 @@ export function EnquiryModal({ isOpen, onClose }) {
                   />
                 </div>
                 <div>
-                  <label className="type-label form-label">Grade Applying For *</label>
+                  <label className="form-label">Grade Applying For *</label>
                   <select
                     value={formData.grade}
                     onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
@@ -97,16 +106,18 @@ export function EnquiryModal({ isOpen, onClose }) {
                     <option value="Grade 7">Grade 7</option>
                     <option value="Grade 8">Grade 8</option>
                     <option value="Grade 9">Grade 9</option>
+                    <option value="Grade 10">Grade 10</option>
                     <option value="Grade 11 Science">Grade 11 (Science PCM/PCB)</option>
                     <option value="Grade 11 Commerce">Grade 11 (Commerce)</option>
                     <option value="Grade 11 Humanities">Grade 11 (Humanities)</option>
+                    <option value="Grade 12">Grade 12</option>
                   </select>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="type-label form-label">Parent / Guardian Name *</label>
+                  <label className="form-label">Parent / Guardian Name *</label>
                   <input
                     type="text"
                     required
@@ -117,7 +128,7 @@ export function EnquiryModal({ isOpen, onClose }) {
                   />
                 </div>
                 <div>
-                  <label className="type-label form-label">Contact Phone *</label>
+                  <label className="form-label">Contact Phone *</label>
                   <input
                     type="tel"
                     required
@@ -129,9 +140,9 @@ export function EnquiryModal({ isOpen, onClose }) {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="type-label form-label">Email Address *</label>
+                  <label className="form-label">Email Address *</label>
                   <input
                     type="email"
                     required
@@ -142,7 +153,7 @@ export function EnquiryModal({ isOpen, onClose }) {
                   />
                 </div>
                 <div>
-                  <label className="type-label form-label">Preferred Contact Mode</label>
+                  <label className="form-label">Preferred Contact Mode</label>
                   <select
                     value={formData.mode}
                     onChange={(e) => setFormData({ ...formData, mode: e.target.value })}
@@ -156,67 +167,84 @@ export function EnquiryModal({ isOpen, onClose }) {
               </div>
 
               <div>
-                <label className="type-label form-label">Questions or Current School Info</label>
+                <label className="form-label flex items-center justify-between">
+                  <span>Questions or Current School Info</span>
+                  <span className="text-[10px] text-slate-400 font-sans font-normal lowercase">(optional)</span>
+                </label>
                 <textarea
-                  rows="3"
+                  rows="2"
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  placeholder="Tell us about your child's interests, previous board, or specific questions about bus routes or scholarships..."
-                  className="form-textarea"
+                  placeholder="Previous board, transport queries, or specific questions..."
+                  className="form-textarea resize-none"
                 ></textarea>
               </div>
 
-              <div className="flex items-start gap-2.5 pt-1">
-                <input type="checkbox" id="consent" required defaultChecked className="mt-1 accent-blue-700" />
-                <label htmlFor="consent" className="text-xs text-slate-600 leading-normal">
-                  I authorize EAK International School to contact me regarding admission updates, interaction schedules, and prospectus delivery for Session 2027–28.
+              <div className="flex items-start gap-2.5 pt-0.5">
+                <input
+                  type="checkbox"
+                  id="consent"
+                  required
+                  defaultChecked
+                  className="mt-1 w-4 h-4 rounded text-blue-700 accent-blue-700 shrink-0 cursor-pointer"
+                />
+                <label htmlFor="consent" className="text-[11.5px] sm:text-xs text-slate-600 leading-snug cursor-pointer select-none">
+                  I authorize EAK International School to contact me regarding admission updates, interaction schedules, and digital prospectus for Session 2027–28.
                 </label>
               </div>
 
-              <div className="pt-3">
-                <button type="submit" className="btn-outline w-full justify-center py-3.5 text-base">
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  className="btn-outline w-full justify-center py-3 sm:py-3.5 text-sm sm:text-base font-bold shadow-md bg-blue-700 hover:bg-blue-800"
+                >
                   <span>Submit Admission Enquiry</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
+                <p className="text-center font-mono text-[10px] text-slate-400 mt-2">
+                  🔒 100% Confidential &bull; Official Admissions Desk
+                </p>
               </div>
             </form>
           </div>
         ) : (
-          <div className="text-center py-4">
-            <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-4 border border-emerald-200">
-              <CheckCircle2 className="w-10 h-10" />
+          <div className="text-center py-3 sm:py-4">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-3 sm:mb-4 border border-emerald-200 shadow-xs">
+              <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10" />
             </div>
-            <h3 className="font-heading font-black text-2xl text-slate-900 mb-2">
+            <h3 className="font-heading font-black text-xl sm:text-2xl text-slate-900 mb-1.5">
               Enquiry Received Successfully!
             </h3>
-            <p className="font-sans text-sm text-slate-600 max-w-md mx-auto mb-6">
+            <p className="font-sans text-xs sm:text-sm text-slate-600 max-w-md mx-auto mb-5">
               Thank you for expressing interest in <strong>EAK International School</strong> for Academic Session 2027–28.
             </p>
 
-            <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200 text-left max-w-md mx-auto space-y-2 text-xs sm:text-sm font-sans text-slate-800 mb-6">
-              <div className="flex justify-between">
-                <span>Application Reference:</span>
+            <div className="bg-slate-50 rounded-2xl p-4 sm:p-5 border border-slate-200 text-left max-w-md mx-auto space-y-2 text-xs sm:text-sm font-sans text-slate-800 mb-5">
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500">Application Reference:</span>
                 <strong className="font-mono text-sm text-blue-700">{refNumber}</strong>
               </div>
-              <div className="flex justify-between">
-                <span>Applicant Name:</span>
-                <strong>{formData.studentName}</strong>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500">Applicant Name:</span>
+                <strong className="text-slate-900">{formData.studentName}</strong>
               </div>
-              <div className="flex justify-between">
-                <span>Grade Applying For:</span>
-                <strong>{formData.grade}</strong>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500">Grade Applying For:</span>
+                <strong className="text-slate-900">{formData.grade}</strong>
               </div>
-              <div className="flex justify-between">
-                <span>Digital Prospectus:</span>
-                <span className="text-emerald-700 font-bold">Dispatched to your email</span>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500">Digital Prospectus:</span>
+                <span className="text-emerald-700 font-bold flex items-center gap-1">
+                  <Check className="w-3.5 h-3.5" /> Dispatched to email
+                </span>
               </div>
             </div>
 
-            <p className="font-sans text-xs text-slate-500 max-w-sm mx-auto mb-6">
+            <p className="font-sans text-xs text-slate-500 max-w-sm mx-auto mb-5">
               Our Senior Admissions Counselor will contact you via {formData.mode} within 24 business hours to arrange the next steps.
             </p>
 
-            <button onClick={handleReset} className="btn-outline px-8">
+            <button onClick={handleReset} className="btn-outline px-8 py-2.5">
               <span>Close Window</span>
             </button>
           </div>
@@ -251,17 +279,20 @@ export function CampusTourModal({ isOpen, onClose }) {
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-tour-title">
       <div className="modal-box">
-        <button onClick={handleClose} className="modal-close-x" aria-label="Close modal">
-          <X className="w-5 h-5" />
-        </button>
+        {/* Top Header Row */}
+        <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+          <span className="project-tag-pill tag-blue text-[10.5px] sm:text-xs py-1 px-2.5">
+            🏛️ CAMPUS IMMERSION
+          </span>
+          <button onClick={handleClose} className="modal-close-x" aria-label="Close modal">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
 
         {!booked ? (
           <div>
-            <div className="mb-6">
-              <span className="project-tag-pill tag-blue text-xs mb-2">
-                CAMPUS IMMERSION
-              </span>
-              <h3 id="modal-tour-title" className="font-heading font-black text-2xl text-slate-900">
+            <div className="mb-4 sm:mb-5">
+              <h3 id="modal-tour-title" className="font-heading font-black text-xl sm:text-2xl text-slate-900 tracking-tight">
                 Book a Campus Tour
               </h3>
               <p className="font-sans text-xs sm:text-sm text-slate-600 mt-1">
@@ -269,9 +300,9 @@ export function CampusTourModal({ isOpen, onClose }) {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-3.5">
               <div>
-                <label className="type-label form-label">Parent / Guardian Name *</label>
+                <label className="form-label">Parent / Guardian Name *</label>
                 <input
                   type="text"
                   required
@@ -283,7 +314,7 @@ export function CampusTourModal({ isOpen, onClose }) {
               </div>
 
               <div>
-                <label className="type-label form-label">Contact Phone *</label>
+                <label className="form-label">Contact Phone *</label>
                 <input
                   type="tel"
                   required
@@ -294,9 +325,9 @@ export function CampusTourModal({ isOpen, onClose }) {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="type-label form-label">Preferred Date *</label>
+                  <label className="form-label">Preferred Date *</label>
                   <input
                     type="date"
                     required
@@ -306,11 +337,11 @@ export function CampusTourModal({ isOpen, onClose }) {
                   />
                 </div>
                 <div>
-                  <label className="type-label form-label">Time Slot *</label>
+                  <label className="form-label">Time Slot *</label>
                   <select
                     value={tourData.slot}
                     onChange={(e) => setTourData({ ...tourData, slot: e.target.value })}
-                    className="form-select"
+                    className="form-select font-medium"
                   >
                     <option value="Morning (09:30 AM – 11:00 AM)">Morning (09:30 AM – 11:00 AM)</option>
                     <option value="Mid-Day (11:30 AM – 01:00 PM)">Mid-Day (11:30 AM – 01:00 PM)</option>
@@ -320,11 +351,11 @@ export function CampusTourModal({ isOpen, onClose }) {
               </div>
 
               <div>
-                <label className="type-label form-label">Number of Visitors</label>
+                <label className="form-label">Number of Visitors</label>
                 <select
                   value={tourData.visitors}
                   onChange={(e) => setTourData({ ...tourData, visitors: e.target.value })}
-                  className="form-select"
+                  className="form-select font-medium"
                 >
                   <option value="2 Persons (Parent + Child)">2 Persons (Parent + Child)</option>
                   <option value="3 Persons (Parents + Child)">3 Persons (Parents + Child)</option>
@@ -333,7 +364,7 @@ export function CampusTourModal({ isOpen, onClose }) {
               </div>
 
               <div className="pt-2">
-                <button type="submit" className="btn-outline w-full justify-center py-3">
+                <button type="submit" className="btn-outline w-full justify-center py-3 text-sm sm:text-base font-bold shadow-md bg-blue-700 hover:bg-blue-800">
                   <Calendar className="w-4 h-4 text-white" />
                   <span>Confirm Campus Visit Slot</span>
                 </button>
@@ -341,33 +372,33 @@ export function CampusTourModal({ isOpen, onClose }) {
             </form>
           </div>
         ) : (
-          <div className="text-center py-4">
-            <div className="w-16 h-16 rounded-full bg-blue-50 text-blue-700 flex items-center justify-center mx-auto mb-4 border border-blue-200">
-              <CalendarCheck className="w-10 h-10" />
+          <div className="text-center py-3 sm:py-4">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-blue-50 text-blue-700 flex items-center justify-center mx-auto mb-3 sm:mb-4 border border-blue-200 shadow-xs">
+              <CalendarCheck className="w-8 h-8 sm:w-10 sm:h-10" />
             </div>
-            <h3 className="font-heading font-black text-2xl text-slate-900 mb-2">
+            <h3 className="font-heading font-black text-xl sm:text-2xl text-slate-900 mb-1.5">
               Campus Visit Confirmed!
             </h3>
-            <p className="font-sans text-sm text-slate-600 max-w-sm mx-auto mb-6">
+            <p className="font-sans text-xs sm:text-sm text-slate-600 max-w-sm mx-auto mb-5">
               We look forward to welcoming your family to EAK International School.
             </p>
 
-            <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 text-left max-w-sm mx-auto space-y-2 text-xs font-sans text-slate-800 mb-6">
-              <div className="flex justify-between">
-                <span>Pass Code:</span>
+            <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 text-left max-w-sm mx-auto space-y-2 text-xs sm:text-sm font-sans text-slate-800 mb-5">
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500">Pass Code:</span>
                 <strong className="font-mono text-blue-700">#VP-EAK-7782</strong>
               </div>
-              <div className="flex justify-between">
-                <span>Date &amp; Slot:</span>
-                <strong>{tourData.date || "Tomorrow"} &bull; {tourData.slot.split(" ")[0]}</strong>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500">Date &amp; Slot:</span>
+                <strong className="text-slate-900">{tourData.date || "Tomorrow"} &bull; {tourData.slot.split(" ")[0]}</strong>
               </div>
-              <div className="flex justify-between">
-                <span>Reporting Desk:</span>
-                <span>Admissions Center, Admin Block</span>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500">Reporting Desk:</span>
+                <span className="text-slate-800 font-medium">Admissions Center, Admin Block</span>
               </div>
             </div>
 
-            <button onClick={handleClose} className="btn-outline px-8">
+            <button onClick={handleClose} className="btn-outline px-8 py-2.5">
               <span>Done</span>
             </button>
           </div>
@@ -398,31 +429,34 @@ export function CallbackModal({ isOpen, onClose }) {
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-cb-title">
       <div className="modal-box">
-        <button onClick={handleClose} className="modal-close-x" aria-label="Close modal">
-          <X className="w-5 h-5" />
-        </button>
+        {/* Top Header Row */}
+        <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+          <span className="project-tag-pill tag-blue text-[10.5px] sm:text-xs py-1 px-2.5">
+            📞 COUNSELING DESK
+          </span>
+          <button onClick={handleClose} className="modal-close-x" aria-label="Close modal">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
 
         {!requested ? (
           <div>
-            <div className="mb-6">
-              <span className="project-tag-pill tag-blue text-xs mb-2">
-                DIRECT ADMISSIONS COUNSELING
-              </span>
-              <h3 id="modal-cb-title" className="font-heading font-black text-2xl text-slate-900">
+            <div className="mb-4 sm:mb-5">
+              <h3 id="modal-cb-title" className="font-heading font-black text-xl sm:text-2xl text-slate-900 tracking-tight">
                 Talk to Our Admissions Team
               </h3>
               <p className="font-sans text-xs sm:text-sm text-slate-600 mt-1">
-                Provide your phone number, and a Senior Counselor will dial you back.
+                Provide your contact details, and a Senior Counselor will dial you back.
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-3.5">
               <div>
-                <label className="type-label form-label">Your Name *</label>
+                <label className="form-label">Your Name *</label>
                 <input
                   type="text"
                   required
-                  placeholder="Parent Name"
+                  placeholder="Parent / Guardian Name"
                   value={cbName}
                   onChange={(e) => setCbName(e.target.value)}
                   className="form-input"
@@ -430,7 +464,7 @@ export function CallbackModal({ isOpen, onClose }) {
               </div>
 
               <div>
-                <label className="type-label form-label">Phone Number *</label>
+                <label className="form-label">Phone Number *</label>
                 <input
                   type="tel"
                   required
@@ -442,11 +476,11 @@ export function CallbackModal({ isOpen, onClose }) {
               </div>
 
               <div>
-                <label className="type-label form-label">Preferred Time Window</label>
+                <label className="form-label">Preferred Time Window</label>
                 <select
                   value={cbTime}
                   onChange={(e) => setCbTime(e.target.value)}
-                  className="form-select"
+                  className="form-select font-medium"
                 >
                   <option value="Within 30 Minutes">Immediately (Within 30 Mins)</option>
                   <option value="Morning (10:00 AM – 12:00 PM)">Morning (10:00 AM – 12:00 PM)</option>
@@ -456,7 +490,7 @@ export function CallbackModal({ isOpen, onClose }) {
               </div>
 
               <div className="pt-2">
-                <button type="submit" className="btn-outline w-full justify-center py-3">
+                <button type="submit" className="btn-outline w-full justify-center py-3 text-sm sm:text-base font-bold shadow-md bg-blue-700 hover:bg-blue-800">
                   <Phone className="w-4 h-4 text-white" />
                   <span>Request Instant Callback</span>
                 </button>
@@ -464,17 +498,17 @@ export function CallbackModal({ isOpen, onClose }) {
             </form>
           </div>
         ) : (
-          <div className="text-center py-4">
-            <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-4 border border-emerald-200">
-              <PhoneForwarded className="w-10 h-10" />
+          <div className="text-center py-3 sm:py-4">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-3 sm:mb-4 border border-emerald-200 shadow-xs">
+              <PhoneForwarded className="w-8 h-8 sm:w-10 sm:h-10" />
             </div>
-            <h3 className="font-heading font-black text-2xl text-slate-900 mb-2">
+            <h3 className="font-heading font-black text-xl sm:text-2xl text-slate-900 mb-1.5">
               Callback Scheduled!
             </h3>
-            <p className="font-sans text-sm text-slate-600 max-w-sm mx-auto mb-6">
+            <p className="font-sans text-xs sm:text-sm text-slate-600 max-w-sm mx-auto mb-5">
               Thank you, {cbName}! An Admissions Counselor will call {cbPhone} ({cbTime}).
             </p>
-            <button onClick={handleClose} className="btn-outline px-8">
+            <button onClick={handleClose} className="btn-outline px-8 py-2.5">
               <span>Close</span>
             </button>
           </div>
@@ -490,28 +524,31 @@ export function FacilityModal({ facility, onClose }) {
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true">
       <div className="modal-box modal-large">
-        <button onClick={onClose} className="modal-close-x" aria-label="Close modal">
-          <X className="w-5 h-5" />
-        </button>
-
-        <div className="mb-4">
-          <span className="project-tag-pill tag-blue text-xs mb-2">
+        {/* Top Header Row */}
+        <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+          <span className="project-tag-pill tag-blue text-[10.5px] sm:text-xs py-1 px-2.5">
             {facility.tag}
           </span>
-          <h3 className="font-heading font-black text-2xl sm:text-3xl text-slate-900">
+          <button onClick={onClose} className="modal-close-x" aria-label="Close modal">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="mb-4">
+          <h3 className="font-heading font-black text-xl sm:text-2xl lg:text-3xl text-slate-900 tracking-tight">
             {facility.title}
           </h3>
         </div>
 
-        <div className="aspect-[16/9] w-full rounded-2xl overflow-hidden mb-6 bg-slate-100 border border-slate-200">
+        <div className="aspect-[16/9] w-full rounded-2xl overflow-hidden mb-5 bg-slate-100 border border-slate-200">
           <img src={facility.image} alt={facility.title} className="w-full h-full object-cover" />
         </div>
 
-        <p className="font-sans text-sm sm:text-base text-slate-600 leading-relaxed mb-6 font-normal">
+        <p className="font-sans text-xs sm:text-sm sm:text-base text-slate-600 leading-relaxed mb-5 font-normal">
           {facility.desc}
         </p>
 
-        <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 mb-6">
+        <div className="bg-slate-50 p-3.5 sm:p-4 rounded-2xl border border-slate-200 mb-5">
           <h4 className="font-mono text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
             INFRASTRUCTURE SPECIFICATIONS
           </h4>
@@ -519,7 +556,7 @@ export function FacilityModal({ facility, onClose }) {
             {facility.specs.map((spec, idx) => (
               <span
                 key={idx}
-                className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-slate-700 bg-white px-3 py-1 rounded-full border border-slate-200 shadow-xs"
+                className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-slate-700 bg-white px-2.5 sm:px-3 py-1 rounded-full border border-slate-200 shadow-xs"
               >
                 <Check className="w-3.5 h-3.5 text-emerald-600" />
                 <span>{spec}</span>
@@ -528,7 +565,7 @@ export function FacilityModal({ facility, onClose }) {
           </div>
         </div>
 
-        <button onClick={onClose} className="btn-outline w-full justify-center">
+        <button onClick={onClose} className="btn-outline w-full justify-center py-2.5">
           <span>Close Preview</span>
         </button>
       </div>
