@@ -43,12 +43,12 @@ export function EnquiryModal({ isOpen, onClose }) {
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-enquiry-title">
       <div className="modal-box modal-large">
         {/* Top Header Row with Session Badge & Close Button */}
-        <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+        <div className="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-100">
           <div className="flex items-center gap-2">
-            <span className="project-tag-pill tag-blue text-[10.5px] sm:text-xs py-1 px-2.5">
+            <span className="project-tag-pill tag-blue text-[10px] sm:text-xs py-0.5 px-2.5">
               🎓 SESSION 2027–28
             </span>
-            <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-mono font-medium text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+            <span className="inline-flex items-center gap-1.5 text-[10.5px] font-mono font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
               Admissions Open
             </span>
@@ -64,20 +64,20 @@ export function EnquiryModal({ isOpen, onClose }) {
 
         {!submitted ? (
           <div>
-            <div className="mb-4 sm:mb-5">
+            <div className="mb-3 sm:mb-4">
               <h3
                 id="modal-enquiry-title"
-                className="font-heading font-black text-xl sm:text-2xl lg:text-3xl text-slate-900 tracking-tight"
+                className="font-heading font-black text-lg sm:text-2xl text-slate-900 tracking-tight leading-snug"
               >
                 Admission Enquiry &amp; Application
               </h3>
-              <p className="font-sans text-xs sm:text-sm text-slate-600 mt-1">
+              <p className="font-sans text-xs text-slate-500 mt-0.5">
                 Fill out the form below. An Admissions Counselor will contact you within 24 hours.
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-3.5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                 <div>
                   <label className="form-label">Child's Full Name *</label>
                   <input
@@ -115,7 +115,7 @@ export function EnquiryModal({ isOpen, onClose }) {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                 <div>
                   <label className="form-label">Parent / Guardian Name *</label>
                   <input
@@ -140,7 +140,7 @@ export function EnquiryModal({ isOpen, onClose }) {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                 <div>
                   <label className="form-label">Email Address *</label>
                   <input
@@ -180,28 +180,28 @@ export function EnquiryModal({ isOpen, onClose }) {
                 ></textarea>
               </div>
 
-              <div className="flex items-start gap-2.5 pt-0.5">
+              <div className="flex items-start gap-2 pt-0.5">
                 <input
                   type="checkbox"
                   id="consent"
                   required
                   defaultChecked
-                  className="mt-1 w-4 h-4 rounded text-blue-700 accent-blue-700 shrink-0 cursor-pointer"
+                  className="mt-0.5 w-3.5 h-3.5 rounded text-blue-700 accent-blue-700 shrink-0 cursor-pointer"
                 />
-                <label htmlFor="consent" className="text-[11.5px] sm:text-xs text-slate-600 leading-snug cursor-pointer select-none">
-                  I authorize EAK International School to contact me regarding admission updates, interaction schedules, and digital prospectus for Session 2027–28.
+                <label htmlFor="consent" className="text-[11px] text-slate-500 leading-snug cursor-pointer select-none">
+                  I authorize EAK International School to contact me regarding admission updates and interaction schedules.
                 </label>
               </div>
 
-              <div className="pt-2">
+              <div className="pt-1.5">
                 <button
                   type="submit"
-                  className="btn-outline w-full justify-center py-3 sm:py-3.5 text-sm sm:text-base font-bold shadow-md bg-blue-700 hover:bg-blue-800"
+                  className="btn-outline w-full justify-center py-2.5 sm:py-3 text-sm sm:text-base font-bold shadow-md bg-blue-700 hover:bg-blue-800"
                 >
                   <span>Submit Admission Enquiry</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
-                <p className="text-center font-mono text-[10px] text-slate-400 mt-2">
+                <p className="text-center font-mono text-[9.5px] text-slate-400 mt-1.5">
                   🔒 100% Confidential &bull; Official Admissions Desk
                 </p>
               </div>
@@ -280,8 +280,8 @@ export function CampusTourModal({ isOpen, onClose }) {
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-tour-title">
       <div className="modal-box">
         {/* Top Header Row */}
-        <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-          <span className="project-tag-pill tag-blue text-[10.5px] sm:text-xs py-1 px-2.5">
+        <div className="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-100">
+          <span className="project-tag-pill tag-blue text-[10px] sm:text-xs py-0.5 px-2.5">
             🏛️ CAMPUS IMMERSION
           </span>
           <button onClick={handleClose} className="modal-close-x" aria-label="Close modal">
@@ -291,16 +291,16 @@ export function CampusTourModal({ isOpen, onClose }) {
 
         {!booked ? (
           <div>
-            <div className="mb-4 sm:mb-5">
-              <h3 id="modal-tour-title" className="font-heading font-black text-xl sm:text-2xl text-slate-900 tracking-tight">
+            <div className="mb-3 sm:mb-4">
+              <h3 id="modal-tour-title" className="font-heading font-black text-lg sm:text-2xl text-slate-900 tracking-tight leading-snug">
                 Book a Campus Tour
               </h3>
-              <p className="font-sans text-xs sm:text-sm text-slate-600 mt-1">
+              <p className="font-sans text-xs text-slate-500 mt-0.5">
                 Experience our 15-acre infrastructure, meet educators, and tour STEM labs.
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-3.5">
+            <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3">
               <div>
                 <label className="form-label">Parent / Guardian Name *</label>
                 <input
@@ -325,7 +325,7 @@ export function CampusTourModal({ isOpen, onClose }) {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                 <div>
                   <label className="form-label">Preferred Date *</label>
                   <input
@@ -363,8 +363,8 @@ export function CampusTourModal({ isOpen, onClose }) {
                 </select>
               </div>
 
-              <div className="pt-2">
-                <button type="submit" className="btn-outline w-full justify-center py-3 text-sm sm:text-base font-bold shadow-md bg-blue-700 hover:bg-blue-800">
+              <div className="pt-1.5">
+                <button type="submit" className="btn-outline w-full justify-center py-2.5 sm:py-3 text-sm sm:text-base font-bold shadow-md bg-blue-700 hover:bg-blue-800">
                   <Calendar className="w-4 h-4 text-white" />
                   <span>Confirm Campus Visit Slot</span>
                 </button>
@@ -430,8 +430,8 @@ export function CallbackModal({ isOpen, onClose }) {
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-cb-title">
       <div className="modal-box">
         {/* Top Header Row */}
-        <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-          <span className="project-tag-pill tag-blue text-[10.5px] sm:text-xs py-1 px-2.5">
+        <div className="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-100">
+          <span className="project-tag-pill tag-blue text-[10px] sm:text-xs py-0.5 px-2.5">
             📞 COUNSELING DESK
           </span>
           <button onClick={handleClose} className="modal-close-x" aria-label="Close modal">
@@ -441,16 +441,16 @@ export function CallbackModal({ isOpen, onClose }) {
 
         {!requested ? (
           <div>
-            <div className="mb-4 sm:mb-5">
-              <h3 id="modal-cb-title" className="font-heading font-black text-xl sm:text-2xl text-slate-900 tracking-tight">
+            <div className="mb-3 sm:mb-4">
+              <h3 id="modal-cb-title" className="font-heading font-black text-lg sm:text-2xl text-slate-900 tracking-tight leading-snug">
                 Talk to Our Admissions Team
               </h3>
-              <p className="font-sans text-xs sm:text-sm text-slate-600 mt-1">
+              <p className="font-sans text-xs text-slate-500 mt-0.5">
                 Provide your contact details, and a Senior Counselor will dial you back.
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-3.5">
+            <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3">
               <div>
                 <label className="form-label">Your Name *</label>
                 <input
@@ -489,8 +489,8 @@ export function CallbackModal({ isOpen, onClose }) {
                 </select>
               </div>
 
-              <div className="pt-2">
-                <button type="submit" className="btn-outline w-full justify-center py-3 text-sm sm:text-base font-bold shadow-md bg-blue-700 hover:bg-blue-800">
+              <div className="pt-1.5">
+                <button type="submit" className="btn-outline w-full justify-center py-2.5 sm:py-3 text-sm sm:text-base font-bold shadow-md bg-blue-700 hover:bg-blue-800">
                   <Phone className="w-4 h-4 text-white" />
                   <span>Request Instant Callback</span>
                 </button>
@@ -525,8 +525,8 @@ export function FacilityModal({ facility, onClose }) {
     <div className="modal-overlay" role="dialog" aria-modal="true">
       <div className="modal-box modal-large">
         {/* Top Header Row */}
-        <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-          <span className="project-tag-pill tag-blue text-[10.5px] sm:text-xs py-1 px-2.5">
+        <div className="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-100">
+          <span className="project-tag-pill tag-blue text-[10px] sm:text-xs py-0.5 px-2.5">
             {facility.tag}
           </span>
           <button onClick={onClose} className="modal-close-x" aria-label="Close modal">
@@ -534,13 +534,13 @@ export function FacilityModal({ facility, onClose }) {
           </button>
         </div>
 
-        <div className="mb-4">
-          <h3 className="font-heading font-black text-xl sm:text-2xl lg:text-3xl text-slate-900 tracking-tight">
+        <div className="mb-3">
+          <h3 className="font-heading font-black text-lg sm:text-2xl text-slate-900 tracking-tight leading-snug">
             {facility.title}
           </h3>
         </div>
 
-        <div className="aspect-[16/9] w-full rounded-2xl overflow-hidden mb-5 bg-slate-100 border border-slate-200">
+        <div className="aspect-[16/9] max-h-56 w-full rounded-2xl overflow-hidden mb-4 bg-slate-100 border border-slate-200">
           <img src={facility.image} alt={facility.title} className="w-full h-full object-cover" />
         </div>
 
