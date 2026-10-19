@@ -84,10 +84,10 @@ export default function HeroSection({ onOpenModal }) {
         </div>
 
         {/* Hero Action CTA Group */}
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-12 sm:mb-14">
+        <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 mb-10 sm:mb-12">
           <button
             onClick={() => onOpenModal("enquiry")}
-            className="btn-outline px-8 py-3.5 text-base shadow-xl"
+            className="btn-outline shadow-lg"
           >
             <span>Apply Now for 2027–28</span>
             <ArrowRight className="w-4 h-4" />
@@ -95,7 +95,7 @@ export default function HeroSection({ onOpenModal }) {
 
           <button
             onClick={() => onOpenModal("tour")}
-            className="btn-outline btn-white px-8 py-3.5 text-base bg-white/90 backdrop-blur-md"
+            className="btn-outline btn-white bg-white/90 backdrop-blur-md"
           >
             <Calendar className="w-4 h-4 text-slate-700" />
             <span>Schedule a Visit</span>
@@ -103,7 +103,7 @@ export default function HeroSection({ onOpenModal }) {
 
           <a
             href="#process"
-            className="btn-outline btn-white hidden md:inline-flex px-6 py-3.5 text-base bg-white/90 backdrop-blur-md"
+            className="btn-outline btn-white hidden md:inline-flex bg-white/90 backdrop-blur-md"
           >
             <span>Admission Flow</span>
             <ChevronRight className="w-4 h-4 text-slate-700" />
