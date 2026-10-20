@@ -286,17 +286,17 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 
 .modal-box {
   background: #ffffff !important;
-  padding: 18px 16px 20px !important;
+  padding: 20px 18px 28px !important;
   max-width: 480px !important;
   width: 100% !important;
   position: relative !important;
-  /* Crucial: don't stretch screen motham! Keep it comfortably within viewport */
-  max-height: min(86dvh, 720px) !important;
-  max-height: min(86vh, 720px) !important;
+  max-height: min(88dvh, 740px) !important;
+  max-height: min(88vh, 740px) !important;
   overflow-y: auto !important;
+  scroll-behavior: smooth !important;
   overscroll-behavior: contain !important;
   -webkit-overflow-scrolling: touch !important;
-  border-radius: 22px !important;
+  border-radius: 24px !important;
   border: 1px solid #e2e8f0 !important;
   box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.38), 0 0 0 1px rgba(15, 23, 42, 0.05) !important;
   margin: auto !important;
@@ -304,7 +304,7 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 
 @media (min-width: 640px) {
   .modal-box {
-    padding: 26px 30px !important;
+    padding: 26px 30px 32px !important;
     border-radius: 26px !important;
     max-height: min(88vh, 780px) !important;
   }
