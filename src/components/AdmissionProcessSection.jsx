@@ -60,7 +60,7 @@ export default function AdmissionProcessSection({ onOpenModal }) {
               <div
                 key={step.num}
                 style={{
-                  top: `calc(105px + ${idx * 12}px)`,
+                  top: `calc(126px + ${idx * 10}px)`,
                   zIndex: 10 + idx,
                 }}
                 className="sticky md:static bg-white rounded-2xl p-4 border border-slate-200 flex items-start gap-3.5 shadow-md transition-all"
