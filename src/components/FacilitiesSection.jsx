@@ -150,7 +150,7 @@ export default function FacilitiesSection({ onSelectFacility }) {
               key={item.id}
               onClick={() => onSelectFacility(item)}
               style={{
-                top: `calc(96px + ${idx * 8}px)`,
+                top: `calc(126px + ${idx * 8}px)`,
                 zIndex: 10 + idx,
               }}
               className="sticky sm:static bg-white rounded-3xl overflow-hidden border border-slate-200 hover:border-blue-400 shadow-lg sm:shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group cursor-pointer hover:-translate-y-1.5"
