@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Calendar, ArrowRight, Menu, X, ArrowUpRight, ChevronRight, Phone } from "lucide-react";
 
 export default function Header({ onOpenModal }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [headerHeight, setHeaderHeight] = useState(105);
+  const headerRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,18 +18,35 @@ export default function Header({ onOpenModal }) {
   }, []);
 
   useEffect(() => {
+    const updateHeaderHeight = () => {
+      if (headerRef.current) {
+        const h = headerRef.current.getBoundingClientRect().height;
+        if (h > 0) setHeaderHeight(Math.round(h));
+      }
+    };
+    updateHeaderHeight();
+    window.addEventListener("resize", updateHeaderHeight);
+    window.addEventListener("scroll", updateHeaderHeight, { passive: true });
+    return () => {
+      window.removeEventListener("resize", updateHeaderHeight);
+      window.removeEventListener("scroll", updateHeaderHeight);
+    };
+  }, []);
+
+  useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") setMobileMenuOpen(false);
     };
     if (mobileMenuOpen) {
       window.addEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+      // Measure current header height immediately on open
+      if (headerRef.current) {
+        const h = headerRef.current.getBoundingClientRect().height;
+        if (h > 0) setHeaderHeight(Math.round(h));
+      }
     }
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
     };
   }, [mobileMenuOpen]);
 
@@ -47,7 +66,7 @@ export default function Header({ onOpenModal }) {
   ];
 
   return (
-    <div className="sticky top-0 z-50 w-full shadow-sm">
+    <div ref={headerRef} className="sticky top-0 z-50 w-full shadow-sm">
       {/* Top Announcement Bar with Scrolling Marquee */}
       <div className="bg-[#0f172a] text-white py-2 px-3 sm:px-4 border-b border-slate-800 relative overflow-hidden">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2.5 sm:gap-4 text-xs">
@@ -182,86 +201,94 @@ export default function Header({ onOpenModal }) {
           </div>
         </div>
 
-        {/* Mobile Navigation Drawer attached directly with 0 gap */}
-        {mobileMenuOpen && (
-          <>
-            {/* Backdrop Dimming Overlay to close on outside tap */}
-            <div
-              className="lg:hidden fixed inset-0 top-0 bg-slate-950/50 backdrop-blur-xs z-40 transition-opacity"
-              onClick={closeMenu}
-              aria-hidden="true"
-            />
+      </header>
 
-            {/* Mobile Dropdown Menu Container */}
-            <div className="lg:hidden absolute top-full left-0 right-0 w-full bg-white border-b-2 border-slate-200 shadow-2xl z-50 overflow-y-auto max-h-[calc(100dvh-105px)] overscroll-contain animate-in fade-in duration-200">
-              <div className="p-4 sm:p-6 flex flex-col">
-                <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-100">
-                  <span className="font-mono text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    EXPLORE SECTIONS
-                  </span>
-                  <span className="font-mono text-[9.5px] font-bold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
-                    ADMISSIONS 2027–28
-                  </span>
-                </div>
+      {/* Mobile Navigation Drawer: FIXED to viewport so it opens in ANY section */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden">
+          {/* Backdrop Dimming Overlay */}
+          <div
+            className="fixed inset-x-0 bottom-0 bg-slate-950/60 backdrop-blur-xs z-40 transition-opacity"
+            style={{ top: `${headerHeight}px` }}
+            onClick={closeMenu}
+            aria-hidden="true"
+          />
 
-                <nav className="flex flex-col gap-0.5">
-                  {navLinks.map((link) => (
-                    <a
-                      key={link.href}
-                      href={link.href}
-                      onClick={closeMenu}
-                      className="flex items-center justify-between py-2 px-2.5 rounded-xl hover:bg-slate-50 active:bg-blue-50 transition-colors group"
-                    >
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        <span className="font-mono text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-200/60 px-2 py-0.5 rounded-md shrink-0">
-                          {link.num}
-                        </span>
-                        <span className="text-sm font-bold text-slate-800 group-hover:text-blue-700 transition-colors truncate">
-                          {link.label}
-                        </span>
-                      </div>
-                      <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all shrink-0 ml-2" />
-                    </a>
-                  ))}
-                </nav>
+          {/* Mobile Dropdown Menu Container */}
+          <div
+            className="fixed inset-x-0 bg-white border-b-2 border-slate-200 shadow-2xl z-50 overflow-y-auto overscroll-contain animate-in fade-in duration-200"
+            style={{
+              top: `${headerHeight}px`,
+              maxHeight: `calc(100dvh - ${headerHeight}px)`,
+            }}
+          >
+            <div className="p-4 sm:p-6 flex flex-col">
+              <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-100">
+                <span className="font-mono text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                  EXPLORE SECTIONS
+                </span>
+                <span className="font-mono text-[9.5px] font-bold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                  ADMISSIONS 2027–28
+                </span>
+              </div>
 
-                <div className="flex flex-col gap-2.5 mt-4 pt-4 border-t border-slate-200">
-                  <button
-                    onClick={() => {
-                      closeMenu();
-                      onOpenModal("enquiry");
-                    }}
-                    className="btn-outline w-full justify-center shadow-sm"
+              <nav className="flex flex-col gap-0.5">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={closeMenu}
+                    className="flex items-center justify-between py-2 px-2.5 rounded-xl hover:bg-slate-50 active:bg-blue-50 transition-colors group"
                   >
-                    <span>Apply Now (Session 2027–28)</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => {
-                      closeMenu();
-                      onOpenModal("tour");
-                    }}
-                    className="btn-outline btn-white w-full justify-center"
-                  >
-                    <Calendar className="w-4 h-4 text-slate-700" />
-                    <span>Schedule Campus Tour</span>
-                  </button>
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <span className="font-mono text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-200/60 px-2 py-0.5 rounded-md shrink-0">
+                        {link.num}
+                      </span>
+                      <span className="text-sm font-bold text-slate-800 group-hover:text-blue-700 transition-colors truncate">
+                        {link.label}
+                      </span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all shrink-0 ml-2" />
+                  </a>
+                ))}
+              </nav>
 
-                  <div className="mt-2 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600 font-medium px-1">
-                    <a href="tel:+919876543210" className="inline-flex items-center gap-1.5 hover:text-blue-700 font-semibold text-slate-800">
-                      <Phone className="w-3.5 h-3.5 text-blue-600" />
-                      <span>+91 98765 43210</span>
-                    </a>
-                    <span className="font-mono text-[9.5px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-bold">
-                      Limited Intake
-                    </span>
-                  </div>
+              <div className="flex flex-col gap-2.5 mt-4 pt-4 border-t border-slate-200">
+                <button
+                  onClick={() => {
+                    closeMenu();
+                    onOpenModal("enquiry");
+                  }}
+                  className="btn-outline w-full justify-center shadow-sm"
+                >
+                  <span>Apply Now (Session 2027–28)</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => {
+                    closeMenu();
+                    onOpenModal("tour");
+                  }}
+                  className="btn-outline btn-white w-full justify-center"
+                >
+                  <Calendar className="w-4 h-4 text-slate-700" />
+                  <span>Schedule Campus Tour</span>
+                </button>
+
+                <div className="mt-2 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600 font-medium px-1">
+                  <a href="tel:+919876543210" className="inline-flex items-center gap-1.5 hover:text-blue-700 font-semibold text-slate-800">
+                    <Phone className="w-3.5 h-3.5 text-blue-600" />
+                    <span>+91 98765 43210</span>
+                  </a>
+                  <span className="font-mono text-[9.5px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-bold">
+                    Limited Intake
+                  </span>
                 </div>
               </div>
             </div>
-          </>
-        )}
-      </header>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
