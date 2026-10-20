@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { X, CheckCircle2, Calendar, Phone, ArrowRight, Check, CalendarCheck, PhoneForwarded } from "lucide-react";
+import { useState, useRef } from "react";
+import { X, CheckCircle2, Calendar, Phone, ArrowRight, Check, CalendarCheck, PhoneForwarded, ChevronDown, Sparkles, User, GraduationCap, ArrowDown } from "lucide-react";
 
 export function EnquiryModal({ isOpen, onClose }) {
   const [submitted, setSubmitted] = useState(false);
@@ -15,8 +15,30 @@ export function EnquiryModal({ isOpen, onClose }) {
     notes: ""
   });
   const [refNumber, setRefNumber] = useState("");
+  const [activeStep, setActiveStep] = useState(1);
+
+  // Input & section refs for smooth auto-scrolling
+  const studentNameRef = useRef(null);
+  const gradeRef = useRef(null);
+  const parentNameRef = useRef(null);
+  const phoneRef = useRef(null);
+  const emailRef = useRef(null);
+  const modeRef = useRef(null);
+  const notesRef = useRef(null);
+  const submitSectionRef = useRef(null);
 
   if (!isOpen) return null;
+
+  const scrollToEl = (ref, focus = false) => {
+    if (ref && ref.current) {
+      setTimeout(() => {
+        ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        if (focus) {
+          ref.current.focus({ preventScroll: true });
+        }
+      }, 90);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,6 +49,7 @@ export function EnquiryModal({ isOpen, onClose }) {
 
   const handleReset = () => {
     setSubmitted(false);
+    setActiveStep(1);
     setFormData({
       studentName: "",
       grade: "Grade 1",
@@ -64,7 +87,7 @@ export function EnquiryModal({ isOpen, onClose }) {
 
         {!submitted ? (
           <div>
-            <div className="mb-3 sm:mb-4">
+            <div className="mb-3">
               <h3
                 id="modal-enquiry-title"
                 className="font-heading font-black text-lg sm:text-2xl text-slate-900 tracking-tight leading-snug"
@@ -72,136 +95,290 @@ export function EnquiryModal({ isOpen, onClose }) {
                 Admission Enquiry &amp; Application
               </h3>
               <p className="font-sans text-xs text-slate-500 mt-0.5">
-                Fill out the form below. An Admissions Counselor will contact you within 24 hours.
+                Fill out the quick 2-step form. An Admissions Counselor will connect with you within 24 hours.
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
-                <div>
-                  <label className="form-label">Child's Full Name *</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.studentName}
-                    onChange={(e) => setFormData({ ...formData, studentName: e.target.value })}
-                    placeholder="e.g. Aryan Sharma"
-                    className="form-input"
-                  />
+            {/* Interactive Step Navigator Pills */}
+            <div className="grid grid-cols-2 gap-2 mb-3 sm:mb-4 bg-slate-50 p-1.5 rounded-2xl border border-slate-200/80">
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveStep(1);
+                  scrollToEl(studentNameRef, true);
+                }}
+                className={`flex items-center justify-center gap-2 py-1.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  activeStep === 1
+                    ? "bg-white text-blue-700 shadow-xs border border-slate-200/60"
+                    : "text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${
+                  formData.studentName.trim().length > 0
+                    ? "bg-emerald-500 text-white"
+                    : "bg-blue-100 text-blue-800"
+                }`}>
+                  {formData.studentName.trim().length > 0 ? "✓" : "1"}
+                </span>
+                <span>Student Info</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveStep(2);
+                  scrollToEl(parentNameRef, true);
+                }}
+                className={`flex items-center justify-center gap-2 py-1.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  activeStep === 2
+                    ? "bg-white text-blue-700 shadow-xs border border-slate-200/60"
+                    : "text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${
+                  formData.parentName && formData.phone && formData.email
+                    ? "bg-emerald-500 text-white"
+                    : "bg-slate-200 text-slate-700"
+                }`}>
+                  {formData.parentName && formData.phone && formData.email ? "✓" : "2"}
+                </span>
+                <span>Parent &amp; Contact</span>
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-3.5">
+              {/* Step 1: Student Details */}
+              <div className="p-3.5 rounded-2xl bg-blue-50/40 border border-blue-100/90 space-y-2.5">
+                <div className="flex items-center justify-between pb-0.5">
+                  <span className="font-mono text-[10px] font-bold text-blue-800 tracking-wider uppercase flex items-center gap-1.5">
+                    <GraduationCap className="w-3.5 h-3.5 text-blue-600" />
+                    STEP 1 &bull; STUDENT DETAILS
+                  </span>
+                  <span className="text-[10px] font-semibold text-blue-600 bg-blue-100/70 px-2 py-0.5 rounded-full">
+                    Academic Info
+                  </span>
                 </div>
-                <div>
-                  <label className="form-label">Grade Applying For *</label>
-                  <select
-                    value={formData.grade}
-                    onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
-                    className="form-select font-medium"
-                    required
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+                  <div>
+                    <label className="form-label">Child's Full Name *</label>
+                    <input
+                      ref={studentNameRef}
+                      type="text"
+                      required
+                      value={formData.studentName}
+                      onChange={(e) => setFormData({ ...formData, studentName: e.target.value })}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          scrollToEl(gradeRef, true);
+                        }
+                      }}
+                      onFocus={() => setActiveStep(1)}
+                      placeholder="e.g. Aryan Sharma"
+                      className="form-input"
+                    />
+                  </div>
+                  <div>
+                    <label className="form-label">Grade Applying For *</label>
+                    <select
+                      ref={gradeRef}
+                      value={formData.grade}
+                      onChange={(e) => {
+                        setFormData({ ...formData, grade: e.target.value });
+                        setActiveStep(2);
+                        scrollToEl(parentNameRef, true);
+                      }}
+                      onFocus={() => setActiveStep(1)}
+                      className="form-select font-medium"
+                      required
+                    >
+                      <option value="Grade 1">Grade 1 (Age 6+)</option>
+                      <option value="Grade 2">Grade 2</option>
+                      <option value="Grade 3">Grade 3</option>
+                      <option value="Grade 4">Grade 4</option>
+                      <option value="Grade 5">Grade 5</option>
+                      <option value="Grade 6">Grade 6</option>
+                      <option value="Grade 7">Grade 7</option>
+                      <option value="Grade 8">Grade 8</option>
+                      <option value="Grade 9">Grade 9</option>
+                      <option value="Grade 10">Grade 10</option>
+                      <option value="Grade 11 Science">Grade 11 (Science PCM/PCB)</option>
+                      <option value="Grade 11 Commerce">Grade 11 (Commerce)</option>
+                      <option value="Grade 11 Humanities">Grade 11 (Humanities)</option>
+                      <option value="Grade 12">Grade 12</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Quick Auto-Advance button */}
+                <div className="flex justify-end pt-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveStep(2);
+                      scrollToEl(parentNameRef, true);
+                    }}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 bg-white px-3 py-1.5 rounded-lg border border-blue-200 shadow-2xs hover:bg-blue-50 transition-all cursor-pointer"
                   >
-                    <option value="Grade 1">Grade 1 (Age 6+)</option>
-                    <option value="Grade 2">Grade 2</option>
-                    <option value="Grade 3">Grade 3</option>
-                    <option value="Grade 4">Grade 4</option>
-                    <option value="Grade 5">Grade 5</option>
-                    <option value="Grade 6">Grade 6</option>
-                    <option value="Grade 7">Grade 7</option>
-                    <option value="Grade 8">Grade 8</option>
-                    <option value="Grade 9">Grade 9</option>
-                    <option value="Grade 10">Grade 10</option>
-                    <option value="Grade 11 Science">Grade 11 (Science PCM/PCB)</option>
-                    <option value="Grade 11 Commerce">Grade 11 (Commerce)</option>
-                    <option value="Grade 11 Humanities">Grade 11 (Humanities)</option>
-                    <option value="Grade 12">Grade 12</option>
-                  </select>
+                    <span>Next: Parent &amp; Contact Details</span>
+                    <ArrowDown className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+              {/* Step 2: Parent & Contact Details */}
+              <div
+                className="p-3.5 rounded-2xl bg-slate-50/70 border border-slate-200/90 space-y-2.5"
+              >
+                <div className="flex items-center justify-between pb-0.5">
+                  <span className="font-mono text-[10px] font-bold text-slate-700 tracking-wider uppercase flex items-center gap-1.5">
+                    <User className="w-3.5 h-3.5 text-slate-500" />
+                    STEP 2 &bull; PARENT &amp; CONTACT DETAILS
+                  </span>
+                  <span className="text-[10px] font-semibold text-slate-500 bg-slate-200/60 px-2 py-0.5 rounded-full">
+                    Verification
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+                  <div>
+                    <label className="form-label">Parent / Guardian Name *</label>
+                    <input
+                      ref={parentNameRef}
+                      type="text"
+                      required
+                      value={formData.parentName}
+                      onChange={(e) => setFormData({ ...formData, parentName: e.target.value })}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          scrollToEl(phoneRef, true);
+                        }
+                      }}
+                      onFocus={() => setActiveStep(2)}
+                      placeholder="e.g. Rajesh Sharma"
+                      className="form-input"
+                    />
+                  </div>
+                  <div>
+                    <label className="form-label">Contact Phone *</label>
+                    <input
+                      ref={phoneRef}
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setFormData({ ...formData, phone: val });
+                        const digits = val.replace(/\D/g, "");
+                        if (digits.length === 10) {
+                          scrollToEl(emailRef, true);
+                        }
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          scrollToEl(emailRef, true);
+                        }
+                      }}
+                      onFocus={() => setActiveStep(2)}
+                      placeholder="+91 98765 43210"
+                      className="form-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+                  <div>
+                    <label className="form-label">Email Address *</label>
+                    <input
+                      ref={emailRef}
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          scrollToEl(modeRef, true);
+                        }
+                      }}
+                      onBlur={() => {
+                        if (formData.email.includes("@") && formData.email.includes(".")) {
+                          scrollToEl(modeRef, false);
+                        }
+                      }}
+                      onFocus={() => setActiveStep(2)}
+                      placeholder="rajesh.sharma@example.com"
+                      className="form-input"
+                    />
+                  </div>
+                  <div>
+                    <label className="form-label">Preferred Contact Mode</label>
+                    <select
+                      ref={modeRef}
+                      value={formData.mode}
+                      onChange={(e) => {
+                        setFormData({ ...formData, mode: e.target.value });
+                        scrollToEl(notesRef, true);
+                      }}
+                      onFocus={() => setActiveStep(2)}
+                      className="form-select font-medium"
+                    >
+                      <option value="Phone Call">Direct Phone Call</option>
+                      <option value="WhatsApp">WhatsApp Message</option>
+                      <option value="Email">Email Communication</option>
+                    </select>
+                  </div>
+                </div>
+
                 <div>
-                  <label className="form-label">Parent / Guardian Name *</label>
+                  <label className="form-label flex items-center justify-between">
+                    <span>Questions or Current School Info</span>
+                    <span className="text-[10px] text-slate-400 font-sans font-normal lowercase">(optional)</span>
+                  </label>
+                  <textarea
+                    ref={notesRef}
+                    rows="2"
+                    value={formData.notes}
+                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        scrollToEl(submitSectionRef, false);
+                      }
+                    }}
+                    onFocus={() => setActiveStep(2)}
+                    placeholder="Previous board, transport queries, or specific questions..."
+                    className="form-textarea resize-none"
+                  ></textarea>
+                </div>
+              </div>
+
+              {/* Submit Section: Consent Checkbox & Big Action Button */}
+              <div ref={submitSectionRef} className="pt-2 pb-4 space-y-3">
+                <div className="flex items-start gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200/70">
                   <input
-                    type="text"
+                    type="checkbox"
+                    id="consent"
                     required
-                    value={formData.parentName}
-                    onChange={(e) => setFormData({ ...formData, parentName: e.target.value })}
-                    placeholder="e.g. Rajesh Sharma"
-                    className="form-input"
+                    defaultChecked
+                    className="mt-0.5 w-4 h-4 rounded text-blue-700 accent-blue-700 shrink-0 cursor-pointer"
                   />
+                  <label htmlFor="consent" className="text-[11px] text-slate-600 leading-snug cursor-pointer select-none">
+                    I authorize EAK International School to contact me regarding admission updates and interaction schedules.
+                  </label>
                 </div>
-                <div>
-                  <label className="form-label">Contact Phone *</label>
-                  <input
-                    type="tel"
-                    required
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+91 98765 43210"
-                    className="form-input"
-                  />
-                </div>
-              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
-                <div>
-                  <label className="form-label">Email Address *</label>
-                  <input
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="rajesh.sharma@example.com"
-                    className="form-input"
-                  />
-                </div>
-                <div>
-                  <label className="form-label">Preferred Contact Mode</label>
-                  <select
-                    value={formData.mode}
-                    onChange={(e) => setFormData({ ...formData, mode: e.target.value })}
-                    className="form-select font-medium"
-                  >
-                    <option value="Phone Call">Direct Phone Call</option>
-                    <option value="WhatsApp">WhatsApp Message</option>
-                    <option value="Email">Email Communication</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="form-label flex items-center justify-between">
-                  <span>Questions or Current School Info</span>
-                  <span className="text-[10px] text-slate-400 font-sans font-normal lowercase">(optional)</span>
-                </label>
-                <textarea
-                  rows="2"
-                  value={formData.notes}
-                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  placeholder="Previous board, transport queries, or specific questions..."
-                  className="form-textarea resize-none"
-                ></textarea>
-              </div>
-
-              <div className="flex items-start gap-2 pt-0.5">
-                <input
-                  type="checkbox"
-                  id="consent"
-                  required
-                  defaultChecked
-                  className="mt-0.5 w-3.5 h-3.5 rounded text-blue-700 accent-blue-700 shrink-0 cursor-pointer"
-                />
-                <label htmlFor="consent" className="text-[11px] text-slate-500 leading-snug cursor-pointer select-none">
-                  I authorize EAK International School to contact me regarding admission updates and interaction schedules.
-                </label>
-              </div>
-
-              <div className="pt-1.5">
                 <button
                   type="submit"
-                  className="btn-outline w-full justify-center py-2.5 sm:py-3 text-sm sm:text-base font-bold shadow-md bg-blue-700 hover:bg-blue-800"
+                  className="btn-outline w-full justify-center py-3 text-sm sm:text-base font-bold shadow-md bg-blue-700 hover:bg-blue-800"
                 >
                   <span>Submit Admission Enquiry</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
-                <p className="text-center font-mono text-[9.5px] text-slate-400 mt-1.5">
+                <p className="text-center font-mono text-[9.5px] text-slate-400 mt-1">
                   🔒 100% Confidential &bull; Official Admissions Desk
                 </p>
               </div>
@@ -264,7 +441,24 @@ export function CampusTourModal({ isOpen, onClose }) {
     visitors: "3 Persons (Parents + Child)"
   });
 
+  const tourParentRef = useRef(null);
+  const tourPhoneRef = useRef(null);
+  const tourDateRef = useRef(null);
+  const tourSlotRef = useRef(null);
+  const tourSubmitRef = useRef(null);
+
   if (!isOpen) return null;
+
+  const scrollToEl = (ref, focus = false) => {
+    if (ref && ref.current) {
+      setTimeout(() => {
+        ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        if (focus) {
+          ref.current.focus({ preventScroll: true });
+        }
+      }, 90);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -300,15 +494,22 @@ export function CampusTourModal({ isOpen, onClose }) {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3">
+            <form onSubmit={handleSubmit} className="space-y-3">
               <div>
                 <label className="form-label">Parent / Guardian Name *</label>
                 <input
+                  ref={tourParentRef}
                   type="text"
                   required
                   placeholder="Your Full Name"
                   value={tourData.parentName}
                   onChange={(e) => setTourData({ ...tourData, parentName: e.target.value })}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      scrollToEl(tourPhoneRef, true);
+                    }
+                  }}
                   className="form-input"
                 />
               </div>
@@ -316,11 +517,25 @@ export function CampusTourModal({ isOpen, onClose }) {
               <div>
                 <label className="form-label">Contact Phone *</label>
                 <input
+                  ref={tourPhoneRef}
                   type="tel"
                   required
                   placeholder="+91 98765 43210"
                   value={tourData.phone}
-                  onChange={(e) => setTourData({ ...tourData, phone: e.target.value })}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setTourData({ ...tourData, phone: val });
+                    const digits = val.replace(/\D/g, "");
+                    if (digits.length === 10) {
+                      scrollToEl(tourDateRef, true);
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      scrollToEl(tourDateRef, true);
+                    }
+                  }}
                   className="form-input"
                 />
               </div>
@@ -329,18 +544,26 @@ export function CampusTourModal({ isOpen, onClose }) {
                 <div>
                   <label className="form-label">Preferred Date *</label>
                   <input
+                    ref={tourDateRef}
                     type="date"
                     required
                     value={tourData.date}
-                    onChange={(e) => setTourData({ ...tourData, date: e.target.value })}
+                    onChange={(e) => {
+                      setTourData({ ...tourData, date: e.target.value });
+                      scrollToEl(tourSlotRef, true);
+                    }}
                     className="form-input"
                   />
                 </div>
                 <div>
                   <label className="form-label">Time Slot *</label>
                   <select
+                    ref={tourSlotRef}
                     value={tourData.slot}
-                    onChange={(e) => setTourData({ ...tourData, slot: e.target.value })}
+                    onChange={(e) => {
+                      setTourData({ ...tourData, slot: e.target.value });
+                      scrollToEl(tourSubmitRef, false);
+                    }}
                     className="form-select font-medium"
                   >
                     <option value="Morning (09:30 AM – 11:00 AM)">Morning (09:30 AM – 11:00 AM)</option>
@@ -354,7 +577,10 @@ export function CampusTourModal({ isOpen, onClose }) {
                 <label className="form-label">Number of Visitors</label>
                 <select
                   value={tourData.visitors}
-                  onChange={(e) => setTourData({ ...tourData, visitors: e.target.value })}
+                  onChange={(e) => {
+                    setTourData({ ...tourData, visitors: e.target.value });
+                    scrollToEl(tourSubmitRef, false);
+                  }}
                   className="form-select font-medium"
                 >
                   <option value="2 Persons (Parent + Child)">2 Persons (Parent + Child)</option>
@@ -363,8 +589,8 @@ export function CampusTourModal({ isOpen, onClose }) {
                 </select>
               </div>
 
-              <div className="pt-1.5">
-                <button type="submit" className="btn-outline w-full justify-center py-2.5 sm:py-3 text-sm sm:text-base font-bold shadow-md bg-blue-700 hover:bg-blue-800">
+              <div ref={tourSubmitRef} className="pt-2 pb-4">
+                <button type="submit" className="btn-outline w-full justify-center py-3 text-sm sm:text-base font-bold shadow-md bg-blue-700 hover:bg-blue-800">
                   <Calendar className="w-4 h-4 text-white" />
                   <span>Confirm Campus Visit Slot</span>
                 </button>
@@ -414,7 +640,23 @@ export function CallbackModal({ isOpen, onClose }) {
   const [cbPhone, setCbPhone] = useState("");
   const [cbTime, setCbTime] = useState("Within 30 Minutes");
 
+  const cbNameRef = useRef(null);
+  const cbPhoneRef = useRef(null);
+  const cbTimeRef = useRef(null);
+  const cbSubmitRef = useRef(null);
+
   if (!isOpen) return null;
+
+  const scrollToEl = (ref, focus = false) => {
+    if (ref && ref.current) {
+      setTimeout(() => {
+        ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        if (focus) {
+          ref.current.focus({ preventScroll: true });
+        }
+      }, 90);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -450,15 +692,22 @@ export function CallbackModal({ isOpen, onClose }) {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3">
+            <form onSubmit={handleSubmit} className="space-y-3">
               <div>
                 <label className="form-label">Your Name *</label>
                 <input
+                  ref={cbNameRef}
                   type="text"
                   required
                   placeholder="Parent / Guardian Name"
                   value={cbName}
                   onChange={(e) => setCbName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      scrollToEl(cbPhoneRef, true);
+                    }
+                  }}
                   className="form-input"
                 />
               </div>
@@ -466,11 +715,25 @@ export function CallbackModal({ isOpen, onClose }) {
               <div>
                 <label className="form-label">Phone Number *</label>
                 <input
+                  ref={cbPhoneRef}
                   type="tel"
                   required
                   placeholder="+91 98765 43210"
                   value={cbPhone}
-                  onChange={(e) => setCbPhone(e.target.value)}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setCbPhone(val);
+                    const digits = val.replace(/\D/g, "");
+                    if (digits.length === 10) {
+                      scrollToEl(cbTimeRef, true);
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      scrollToEl(cbTimeRef, true);
+                    }
+                  }}
                   className="form-input"
                 />
               </div>
@@ -478,8 +741,12 @@ export function CallbackModal({ isOpen, onClose }) {
               <div>
                 <label className="form-label">Preferred Time Window</label>
                 <select
+                  ref={cbTimeRef}
                   value={cbTime}
-                  onChange={(e) => setCbTime(e.target.value)}
+                  onChange={(e) => {
+                    setCbTime(e.target.value);
+                    scrollToEl(cbSubmitRef, false);
+                  }}
                   className="form-select font-medium"
                 >
                   <option value="Within 30 Minutes">Immediately (Within 30 Mins)</option>
@@ -489,8 +756,8 @@ export function CallbackModal({ isOpen, onClose }) {
                 </select>
               </div>
 
-              <div className="pt-1.5">
-                <button type="submit" className="btn-outline w-full justify-center py-2.5 sm:py-3 text-sm sm:text-base font-bold shadow-md bg-blue-700 hover:bg-blue-800">
+              <div ref={cbSubmitRef} className="pt-2 pb-4">
+                <button type="submit" className="btn-outline w-full justify-center py-3 text-sm sm:text-base font-bold shadow-md bg-blue-700 hover:bg-blue-800">
                   <Phone className="w-4 h-4 text-white" />
                   <span>Request Instant Callback</span>
                 </button>
