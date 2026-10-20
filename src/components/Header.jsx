@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Calendar, ArrowRight, Menu, X, ArrowUpRight } from "lucide-react";
+import { Calendar, ArrowRight, Menu, X, ArrowUpRight, ChevronRight, Phone } from "lucide-react";
 
 export default function Header({ onOpenModal }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -15,7 +15,36 @@ export default function Header({ onOpenModal }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") setMobileMenuOpen(false);
+    };
+    if (mobileMenuOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   const closeMenu = () => setMobileMenuOpen(false);
+
+  const navLinks = [
+    { href: "#why-choose", num: "02", label: "Why Choose EAK School" },
+    { href: "#academics", num: "03", label: "Academic Programs (Grades 1–12)" },
+    { href: "#highlights", num: "04", label: "School Highlights & Stats" },
+    { href: "#facilities", num: "05", label: "Campus Facilities (15-Acre)" },
+    { href: "#process", num: "06", label: "5-Step Admission Process" },
+    { href: "#dates", num: "07", label: "Important Dates & Deadlines" },
+    { href: "#documents", num: "08", label: "Required Documents Checklist" },
+    { href: "#fees", num: "09", label: "Fee Structure 2027–28" },
+    { href: "#testimonials", num: "10", label: "Parent Testimonials" },
+    { href: "#faq", num: "11", label: "Frequently Asked Questions" },
+  ];
 
   return (
     <div className="sticky top-0 z-50 w-full shadow-sm">
@@ -68,7 +97,7 @@ export default function Header({ onOpenModal }) {
 
       {/* Main Sticky Header */}
       <header
-        className={`w-full transition-all duration-300 ${isScrolled
+        className={`w-full relative transition-all duration-300 ${isScrolled
           ? "bg-white/95 backdrop-blur-md shadow-md py-3 border-b border-slate-200"
           : "bg-white py-3.5 border-b border-slate-100"
           }`}
@@ -153,65 +182,84 @@ export default function Header({ onOpenModal }) {
           </div>
         </div>
 
-        {/* Mobile Navigation Drawer */}
+        {/* Mobile Navigation Drawer attached directly with 0 gap */}
         {mobileMenuOpen && (
-          <div className="lg:hidden fixed inset-x-0 top-[108px] bg-white border-b-2 border-slate-200 shadow-2xl p-6 z-50">
-            <nav className="flex flex-col gap-3 font-medium">
-              <a href="#why-choose" onClick={closeMenu} className="py-2 border-b border-slate-100 text-sm font-bold text-slate-800">
-                02. Why Choose EAK School
-              </a>
-              <a href="#academics" onClick={closeMenu} className="py-2 border-b border-slate-100 text-sm font-bold text-slate-800">
-                03. Academic Programs (Grades 1–12)
-              </a>
-              <a href="#highlights" onClick={closeMenu} className="py-2 border-b border-slate-100 text-sm font-bold text-slate-800">
-                04. School Highlights &amp; Stats
-              </a>
-              <a href="#facilities" onClick={closeMenu} className="py-2 border-b border-slate-100 text-sm font-bold text-slate-800">
-                05. Campus Facilities (15-Acre)
-              </a>
-              <a href="#process" onClick={closeMenu} className="py-2 border-b border-slate-100 text-sm font-bold text-slate-800">
-                06. 5-Step Admission Process
-              </a>
-              <a href="#dates" onClick={closeMenu} className="py-2 border-b border-slate-100 text-sm font-bold text-slate-800">
-                07. Important Dates &amp; Deadlines
-              </a>
-              <a href="#documents" onClick={closeMenu} className="py-2 border-b border-slate-100 text-sm font-bold text-slate-800">
-                08. Required Documents Checklist
-              </a>
-              <a href="#fees" onClick={closeMenu} className="py-2 border-b border-slate-100 text-sm font-bold text-slate-800">
-                09. Fee Structure 2027–28
-              </a>
-              <a href="#testimonials" onClick={closeMenu} className="py-2 border-b border-slate-100 text-sm font-bold text-slate-800">
-                10. Parent Testimonials
-              </a>
-              <a href="#faq" onClick={closeMenu} className="py-2 text-sm font-bold text-slate-800">
-                11. Frequently Asked Questions
-              </a>
-            </nav>
+          <>
+            {/* Backdrop Dimming Overlay to close on outside tap */}
+            <div
+              className="lg:hidden fixed inset-0 top-0 bg-slate-950/50 backdrop-blur-xs z-40 transition-opacity"
+              onClick={closeMenu}
+              aria-hidden="true"
+            />
 
-            <div className="flex flex-col gap-3 mt-6 pt-5 border-t border-slate-200">
-              <button
-                onClick={() => {
-                  closeMenu();
-                  onOpenModal("enquiry");
-                }}
-                className="btn-outline w-full justify-center"
-              >
-                <span>Apply Now (Session 2027–28)</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => {
-                  closeMenu();
-                  onOpenModal("tour");
-                }}
-                className="btn-outline btn-white w-full justify-center"
-              >
-                <Calendar className="w-4 h-4 text-slate-700" />
-                <span>Schedule Campus Tour</span>
-              </button>
+            {/* Mobile Dropdown Menu Container */}
+            <div className="lg:hidden absolute top-full left-0 right-0 w-full bg-white border-b-2 border-slate-200 shadow-2xl z-50 overflow-y-auto max-h-[calc(100dvh-105px)] overscroll-contain animate-in fade-in duration-200">
+              <div className="p-4 sm:p-6 flex flex-col">
+                <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-100">
+                  <span className="font-mono text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    EXPLORE SECTIONS
+                  </span>
+                  <span className="font-mono text-[9.5px] font-bold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                    ADMISSIONS 2027–28
+                  </span>
+                </div>
+
+                <nav className="flex flex-col gap-0.5">
+                  {navLinks.map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      onClick={closeMenu}
+                      className="flex items-center justify-between py-2 px-2.5 rounded-xl hover:bg-slate-50 active:bg-blue-50 transition-colors group"
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span className="font-mono text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-200/60 px-2 py-0.5 rounded-md shrink-0">
+                          {link.num}
+                        </span>
+                        <span className="text-sm font-bold text-slate-800 group-hover:text-blue-700 transition-colors truncate">
+                          {link.label}
+                        </span>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all shrink-0 ml-2" />
+                    </a>
+                  ))}
+                </nav>
+
+                <div className="flex flex-col gap-2.5 mt-4 pt-4 border-t border-slate-200">
+                  <button
+                    onClick={() => {
+                      closeMenu();
+                      onOpenModal("enquiry");
+                    }}
+                    className="btn-outline w-full justify-center shadow-sm"
+                  >
+                    <span>Apply Now (Session 2027–28)</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      closeMenu();
+                      onOpenModal("tour");
+                    }}
+                    className="btn-outline btn-white w-full justify-center"
+                  >
+                    <Calendar className="w-4 h-4 text-slate-700" />
+                    <span>Schedule Campus Tour</span>
+                  </button>
+
+                  <div className="mt-2 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600 font-medium px-1">
+                    <a href="tel:+919876543210" className="inline-flex items-center gap-1.5 hover:text-blue-700 font-semibold text-slate-800">
+                      <Phone className="w-3.5 h-3.5 text-blue-600" />
+                      <span>+91 98765 43210</span>
+                    </a>
+                    <span className="font-mono text-[9.5px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-bold">
+                      Limited Intake
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          </>
         )}
       </header>
     </div>
