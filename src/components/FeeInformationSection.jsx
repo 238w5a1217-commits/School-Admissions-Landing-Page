@@ -73,7 +73,7 @@ export default function FeeInformationSection({ onOpenModal }) {
               <div
                 key={row.tier}
                 style={{
-                  top: `calc(105px + ${idx * 14}px)`,
+                  top: `calc(126px + ${idx * 12}px)`,
                   zIndex: 10 + idx,
                 }}
                 className="sticky md:static bg-white rounded-2xl border border-slate-200 p-4 shadow-md transition-all"
