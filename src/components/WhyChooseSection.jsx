@@ -282,7 +282,7 @@ export default function WhyChooseSection() {
                 <div
                   key={item.id}
                   style={{
-                    top: `calc(96px + ${idx * 8}px)`,
+                    top: `calc(126px + ${idx * 8}px)`,
                     zIndex: 10 + idx,
                   }}
                   className={`sticky sm:static bg-white rounded-3xl overflow-hidden border border-slate-200 border-t-4 ${item.accentColor} shadow-lg sm:shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1.5`}
