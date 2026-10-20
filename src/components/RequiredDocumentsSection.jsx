@@ -94,7 +94,7 @@ export default function RequiredDocumentsSection() {
               <div
                 key={doc.id}
                 style={{
-                  top: `calc(105px + ${idx * 8}px)`,
+                  top: `calc(126px + ${idx * 8}px)`,
                   zIndex: 10 + idx,
                 }}
                 className="sticky md:static bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 hover:border-blue-300 transition-all shadow-md md:shadow-xs flex items-start gap-3.5 sm:gap-4"
